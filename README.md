@@ -11,7 +11,7 @@
 **使用步骤**：
 1. 确保将此代码文件放置在要检查的项目目录下。
 2. 打开终端，进入项目目录。
-3. 运行脚本，输入项目目录作为参数，例如：`python script_name.py project_directory`。
+3. 运行脚本，输入项目目录作为参数，例如：`python UnusedImageRemover.py project_directory`。
 4. 程序将开始检查图片引用情况，并显示相关信息。
 5. 当显示有未被引用的图片时，根据提示输入 `y` 确认删除或 `n` 取消删除操作。
 
