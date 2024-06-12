@@ -27,14 +27,15 @@ def check_and_delete_images(project_dir):
                     image_paths.append(os.path.join(root, dir))
     print("找到的图片资源路径如下：")
     for path in image_paths:
-        print(f"  + {path}")
+        print(f"  - {path}")
 
     # 步骤 3：提取图片资源文件夹的名称
     image_names = [os.path.splitext(os.path.basename(image_path))[0] for image_path in image_paths]
 
-    # 步骤 4：使用名称遍历查找在.m 代码和.xib 文件中没有用到的图片资源
+    # 步骤 4：使用名称遍历查找在.m 代码、.xib 文件和.storyboard 文件中没有用到的图片资源
     m_files = [os.path.join(root, file) for root, dirs, files in os.walk(project_dir) for file in files if file.endswith('.m')]
     xib_files = [os.path.join(root, file) for root, dirs, files in os.walk(project_dir) for file in files if file.endswith('.xib')]
+    storyboard_files = [os.path.join(root, file) for root, dirs, files in os.walk(project_dir) for file in files if file.endswith('.storyboard')]
 
     for image_name in image_names:
         found = False
@@ -49,6 +50,13 @@ def check_and_delete_images(project_dir):
             with open(xib_file, 'r') as f:
                 content = f.read()
                 # 匹配 xib 中图片引用的特定形式
+                if re.search(r'image="{}"'.format(image_name), content):
+                    found = True
+                    break
+        for storyboard_file in storyboard_files:
+            with open(storyboard_file, 'r') as f:
+                content = f.read()
+                # 匹配 storyboard 中图片引用的特定形式
                 if re.search(r'image="{}"'.format(image_name), content):
                     found = True
                     break
